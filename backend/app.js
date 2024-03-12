@@ -17,4 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //routes
+const userRoutes = require("./Routes/UserRoutes");
+app.use("/api/v2/user/", userRoutes);
 module.exports = app;
