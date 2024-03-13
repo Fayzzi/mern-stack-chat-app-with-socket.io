@@ -11,7 +11,6 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-
   password: {
     type: String,
     required: true,
@@ -23,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     enum: ["male", "female"],
   },
-  avater: {
+  avatar: {
     type: String,
     default: "",
   },
@@ -39,7 +38,7 @@ UserSchema.methods.getJwtToken = function () {
     expiresIn: process.env.JWTEXPIRES,
   });
 };
-UserSchema.methods.COmparePassword = function (password) {
+UserSchema.methods.ComparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 module.exports = mongoose.model("chat-user", UserSchema);
