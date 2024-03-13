@@ -9,3 +9,11 @@
   border-radius: 25px;
   background-color: teal;
 }
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url("bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  /* background-attachment: fixed; */
+}
