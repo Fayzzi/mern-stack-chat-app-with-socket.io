@@ -1,4 +1,4 @@
-const SendToken = (user, statusCode, res) => {
+const sendToken = (user, statusCode, res) => {
   const token = user.getJwtToken();
   res
     .cookie("user_token", token, {
@@ -7,6 +7,7 @@ const SendToken = (user, statusCode, res) => {
       sameSite: "strict",
       secure: process.env.NODE_ENV !== "development",
     })
+    .status(statusCode)
     .json({
       success: true,
       message: "success",
@@ -14,3 +15,4 @@ const SendToken = (user, statusCode, res) => {
       token,
     });
 };
+module.exports = sendToken;
