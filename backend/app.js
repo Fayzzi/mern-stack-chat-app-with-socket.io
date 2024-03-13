@@ -18,5 +18,9 @@ app.use(cookieParser());
 
 //routes
 const userRoutes = require("./Routes/UserRoutes");
+const messageRoutes = require("./Routes/MesageRoutes");
+
 app.use("/api/v2/user/", userRoutes);
+app.use("/api/v2/message/", messageRoutes);
+
 module.exports = app;
