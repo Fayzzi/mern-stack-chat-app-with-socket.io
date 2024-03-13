@@ -2,6 +2,7 @@ const CatchAsyncErrors = require("./../middlewares/CatchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const user = require("./../Models/UserModel");
 const sendToken = require("./../utils/JwtToken");
+const Conversation = require("../Models/Conversation");
 const signUpUser = CatchAsyncErrors(async (req, res, next) => {
   try {
     const { name, username, password, gender } = req.body;
@@ -35,6 +36,22 @@ const logout = (req, res, next) => {
     return next(new ErrorHandler(error, 500));
   }
 };
+//get all user for sidebar
+const sidebarusers = CatchAsyncErrors(async (req, res, next) => {
+  try {
+    const currentUser = req.user.id;
+    const findallUser = await Conversation.find({
+      participants: {
+        $in: [currentUser],
+      },
+    });
+    res.json(findallUser);
+  } catch (error) {
+    return next(new ErrorHandler(error, 500));
+  }
+});
 module.exports = {
   signUpUser,
+  sidebarusers,
+  logout,
 };

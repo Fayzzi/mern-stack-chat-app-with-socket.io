@@ -4,7 +4,8 @@ const {
   sendMessage,
   getAllmessages,
 } = require("./../Controllers/MessageController");
-router.post("/send-new-message", sendMessage);
-router.get("/get-all-messages", getAllmessages);
+const { isAuthenticated } = require("../middlewares/Auth");
+router.post("/send-new-message/:id", isAuthenticated, sendMessage);
+router.get("/get-all-messages/:id", isAuthenticated, getAllmessages);
 
 module.exports = router;

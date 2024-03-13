@@ -8,6 +8,10 @@ const conversationSchema = new mongoose.Schema(
         ref: "chat-user",
       },
     ],
+    avatar: {
+      type: String,
+      default: "",
+    },
 
     message: [
       {
