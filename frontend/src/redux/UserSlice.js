@@ -37,6 +37,10 @@ const UserSlice = createSlice({
       .addCase(Usergetter.rejected, (state, action) => {
         state.error = action.error.message;
         state.loading = false;
+      })
+      .addCase(LogoutUser.fulfilled, (state, action) => {
+        state.user = null;
+        state.loading = false;
       });
   },
 });

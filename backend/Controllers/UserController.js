@@ -44,7 +44,7 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
 });
 const logout = (req, res, next) => {
   try {
-    res.cookie("user_token", "", { maxAge: 0 });
+    res.clearCookie("user_token");
     res.status(200).json({
       success: true,
       message: "User logged out",
