@@ -1,16 +1,17 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Usergetter } from "./redux/UserSlice";
 import UserProtectedRoutes from "./ProtectedRoutes/UserProtectedRoutes";
 
 function App() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(Usergetter());
   }, [dispatch]);
@@ -18,23 +19,22 @@ function App() {
     <div className="p-4 h-screen flex items-center justify-center">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route
-            path="/login"
+            path="/"
             element={
               <UserProtectedRoutes>
-                <Login />
+                <Home />
               </UserProtectedRoutes>
             }
+          />
+          <Route
+            path="/login"
+            element={user ? <Navigate to={"/"} /> : <Login />}
           />
 
           <Route
             path="/signup"
-            element={
-              <UserProtectedRoutes>
-                <Signup />
-              </UserProtectedRoutes>
-            }
+            element={user ? <Navigate to={"/"} /> : <Signup />}
           />
         </Routes>
         <ToastContainer
