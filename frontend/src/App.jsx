@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { Usergetter } from "./redux/UserSlice";
+import UserProtectedRoutes from "./ProtectedRoutes/UserProtectedRoutes";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,9 +19,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <UserProtectedRoutes>
+                <Login />
+              </UserProtectedRoutes>
+            }
+          />
 
-          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/signup"
+            element={
+              <UserProtectedRoutes>
+                <Signup />
+              </UserProtectedRoutes>
+            }
+          />
         </Routes>
         <ToastContainer
           position="bottom-center"
