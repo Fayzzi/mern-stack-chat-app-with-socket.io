@@ -22,6 +22,26 @@ const signUpUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(error, 400));
   }
 });
+const loginUser = catchAsyncErrors(async (req, res, next) => {
+  const { username, password } = req.body;
+  console.log(username, password);
+  const existingUser = await user
+    .findOne({ username: username })
+    .select("+password");
+
+  if (existingUser) {
+    const comparePaswors = existingUser.ComparePassword(password);
+    console.log("passwords:", comparePaswors);
+
+    if (comparePaswors) {
+      sendToken(existingUser, 200, res);
+    } else {
+      return next(new ErrorHandler("Invalid Password!!", 400));
+    }
+  } else {
+    return next(new ErrorHandler("User not exists", 400));
+  }
+});
 const logout = (req, res, next) => {
   try {
     res.cookie("user_token", "", { maxAge: 0 });
@@ -66,4 +86,5 @@ module.exports = {
   sidebarusers,
   getUser,
   logout,
+  loginUser,
 };

@@ -3,13 +3,13 @@ import { Button } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Toast } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Usergetter } from "../redux/UserSlice";
 export default function Signup() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  console.log(user);
+  const Navigate = useNavigate();
+
   useEffect(() => {
     if (user) {
       Navigate("/");
@@ -22,7 +22,6 @@ export default function Signup() {
     confirmPassword: "",
     gender: "",
   });
-  const Navigate = useNavigate();
 
   const handleCheckboxChange = (gender) => {
     setInputs({ ...inputs, gender });
