@@ -1,10 +1,20 @@
 import axios from "axios";
 import { Button } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Toast } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Usergetter } from "../redux/UserSlice";
 export default function Signup() {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  console.log(user);
+  useEffect(() => {
+    if (user) {
+      Navigate("/");
+    }
+  }, [user]);
   const [inputs, setInputs] = useState({
     fullName: "",
     username: "",
@@ -37,6 +47,7 @@ export default function Signup() {
       })
       .then(() => {
         toast.success("Done");
+        dispatch(Usergetter());
         Navigate("/");
       })
       .catch((err) => toast.error(err.response.data.message));

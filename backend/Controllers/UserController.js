@@ -33,6 +33,20 @@ const logout = (req, res, next) => {
     return next(new ErrorHandler(error, 500));
   }
 };
+//get current logged in user
+const getUser = async (req, res, next) => {
+  try {
+    const usercheck = await user.findById(req.user.id);
+    if (!usercheck) {
+      return next(new ErrorHandler("User doesn't exist", 400));
+    }
+    res.json({
+      usercheck,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error, 500));
+  }
+};
 //get all user for sidebar
 const sidebarusers = catchAsyncErrors(async (req, res, next) => {
   try {
@@ -50,5 +64,6 @@ const sidebarusers = catchAsyncErrors(async (req, res, next) => {
 module.exports = {
   signUpUser,
   sidebarusers,
+  getUser,
   logout,
 };
