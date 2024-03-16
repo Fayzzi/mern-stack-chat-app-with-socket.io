@@ -1,17 +1,14 @@
-const CatchAsyncErrors = require("./../middlewares/CatchAsyncError");
-const ErrorHandler = require("../utils/ErrorHandler");
+const catchAsyncErrors = require("./../middlewares/CatchAsyncError");
 const user = require("./../Models/UserModel");
 const sendToken = require("./../utils/JwtToken");
 const Conversation = require("../Models/Conversation");
-const signUpUser = CatchAsyncErrors(async (req, res, next) => {
+const ErrorHandler = require("./../utils/ErrorHandler");
+const signUpUser = catchAsyncErrors(async (req, res, next) => {
   try {
     const { name, username, password, gender } = req.body;
-    const existingUser = await user.findOne({ username });
+    const existingUser = await user.findOne({ username: username });
     if (existingUser) {
-      res.json({
-        message: "Username must be unique!!",
-      });
-      //return next(new ErrorHandler("Username must be unique!!", 500));
+      return next(new ErrorHandler("User already exists", 400));
     } else {
       const newUser = await user.create({
         name,
@@ -22,7 +19,7 @@ const signUpUser = CatchAsyncErrors(async (req, res, next) => {
       sendToken(newUser, 200, res);
     }
   } catch (error) {
-    return next(new ErrorHandler(error, 500));
+    return next(new ErrorHandler(error, 400));
   }
 });
 const logout = (req, res, next) => {
@@ -37,7 +34,7 @@ const logout = (req, res, next) => {
   }
 };
 //get all user for sidebar
-const sidebarusers = CatchAsyncErrors(async (req, res, next) => {
+const sidebarusers = catchAsyncErrors(async (req, res, next) => {
   try {
     const currentUser = req.user.id;
     const findallUser = await Conversation.find({

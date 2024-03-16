@@ -1,7 +1,9 @@
+import axios from "axios";
 import { Button } from "flowbite-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Toast } from "flowbite-react";
 export default function Signup() {
   const [inputs, setInputs] = useState({
     fullName: "",
@@ -10,15 +12,35 @@ export default function Signup() {
     confirmPassword: "",
     gender: "",
   });
+  const Navigate = useNavigate();
 
   const handleCheckboxChange = (gender) => {
     setInputs({ ...inputs, gender });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   await signup(inputs);
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(
+      inputs.fullName,
+      inputs.username,
+      inputs.password,
+      inputs.gender
+    );
+
+    const response = await axios
+      .post("/api/v2/user/signup", {
+        name: inputs.fullName,
+        username: inputs.username,
+        password: inputs.password,
+        gender: inputs.gender,
+      })
+      .then(() => {
+        toast.success("Done");
+        Navigate("/");
+      })
+      .catch((err) => toast.error(err.response.data.message));
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -27,10 +49,10 @@ export default function Signup() {
           Sign Up <span className="text-blue-500"> ChatApp</span>
         </h1>
 
-        <form>
+        <form aria-required onSubmit={handleSubmit}>
           <div>
             <label className="label p-2">
-              <span className="text-base label-text">Full Name</span>
+              <span className="text-base label-text text-white">Full Name</span>
             </label>
             <input
               type="text"
@@ -45,7 +67,7 @@ export default function Signup() {
 
           <div>
             <label className="label p-2 ">
-              <span className="text-base label-text">Username</span>
+              <span className="text-base label-text text-white">Username</span>
             </label>
             <input
               type="text"
@@ -60,7 +82,7 @@ export default function Signup() {
 
           <div>
             <label className="label">
-              <span className="text-base label-text">Password</span>
+              <span className="text-base label-text text-white">Password</span>
             </label>
             <input
               type="password"
@@ -75,7 +97,9 @@ export default function Signup() {
 
           <div>
             <label className="label">
-              <span className="text-base label-text">Confirm Password</span>
+              <span className="text-base label-text text-white">
+                Confirm Password
+              </span>
             </label>
             <input
               type="password"
@@ -103,6 +127,7 @@ export default function Signup() {
 
           <div>
             <Button
+              type="submit"
               className="w-full my-2"
               pill
               gradientDuoTone={"purpleToBlue"}
@@ -125,7 +150,7 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
             selectedGender === "male" ? "selected" : ""
           } `}
         >
-          <span className="label-text">Male</span>
+          <span className="label-text text-white">Male</span>
           <input
             type="checkbox"
             className="checkbox checkbox-sm border-slate-900"
@@ -140,7 +165,7 @@ const GenderCheckbox = ({ onCheckboxChange, selectedGender }) => {
             selectedGender === "female" ? "selected" : ""
           }`}
         >
-          <span className="label-text">Female</span>
+          <span className="label-text text-white">Female</span>
           <input
             type="checkbox"
             className="checkbox checkbox-sm border-slate-900"
